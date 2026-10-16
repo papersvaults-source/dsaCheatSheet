@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DSA Cheatsheet for Java and C++: Arrays to DP</title><meta name="description" content="Compact Java and C++ DSA cheatsheet with problem statements: arrays, strings, hashing, linked list, stack, recursion, trees, graphs, DP. Tracks your progress offline."><meta property="og:title" content="DSA Cheatsheet for Java and C++"><meta property="og:type" content="website">
+<style>
+:root{--bg:#fafafa;--fg:#1c1c1e;--card:#fff;--bd:#ddd;--ac:#4f46e5;--code:#f3f4f6}
+@media(prefers-color-scheme:dark){:root{--bg:#121212;--fg:#e8e8e8;--card:#1e1e1e;--bd:#333;--ac:#818cf8;--code:#0d0d0d}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--bd);padding:10px 14px;z-index:5}
+h1{font-size:18px;margin:0 0 8px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+#q{flex:1;min-width:150px;max-width:300px;padding:6px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg)}
+main{max-width:860px;margin:0 auto;padding:12px}
+.tip{background:var(--card);border-left:4px solid var(--ac);padding:8px 12px;border-radius:6px;margin-bottom:12px;font-size:14px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:8px;margin-bottom:8px}
+summary{padding:9px 12px;cursor:pointer;font-weight:600}
+summary small{color:var(--ac);font-weight:400;margin-left:8px}
+details p{margin:0 12px 6px;font-size:14px;opacity:.85}
+pre{margin:0 12px 12px;padding:10px;background:var(--code);border-radius:6px;overflow-x:auto;font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace}
+:root[data-theme=dark]{--bg:#121212;--fg:#e8e8e8;--card:#1e1e1e;--bd:#333;--ac:#818cf8;--code:#0d0d0d;--k:#c4b5fd;--s:#6ee7b7;--c:#9ca3af;--n:#fbbf24}
+:root[data-theme=light]{--bg:#fafafa;--fg:#1c1c1e;--card:#fff;--bd:#ddd;--ac:#4f46e5;--code:#f3f4f6;--k:#7c3aed;--s:#047857;--c:#6b7280;--n:#b45309}
+:root{--k:#7c3aed;--s:#047857;--c:#6b7280;--n:#b45309}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--k:#c4b5fd;--s:#6ee7b7;--c:#9ca3af;--n:#fbbf24}}
+h1{display:flex;justify-content:space-between;align-items:baseline}
+#pt{font-size:13px;font-weight:400;color:var(--ac)}
+.pb{height:5px;background:var(--bd);border-radius:3px;margin-bottom:8px;overflow:hidden}
+#bar{height:100%;width:0;background:var(--ac);transition:width .3s}
+.tb{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tb button,.bt{border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:5px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+.tb button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+summary{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+summary small{margin-left:0;flex:1}
+details.done .ti{text-decoration:line-through;opacity:.6}
+.ck{width:17px;height:17px;accent-color:var(--ac)}
+.st{margin-left:auto;border:0;background:none;font-size:18px;color:var(--bd);cursor:pointer}
+.st.on{color:#f59e0b}
+details>p{opacity:1}
+.cw{position:relative}.cw pre{margin-bottom:8px}
+.cp{position:absolute;right:18px;top:6px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:6px;font-size:12px;padding:2px 8px;cursor:pointer}
+textarea{display:block;width:calc(100% - 24px);margin:0 12px 12px;min-height:44px;padding:8px;border:1px dashed var(--bd);border-radius:6px;background:transparent;color:var(--fg);font:13px system-ui;resize:vertical}
+pre i{font-style:normal}.k{color:var(--k);font-weight:600}.s{color:var(--s)}.c{color:var(--c)}.n{color:var(--n)}
+footer{text-align:center;font-size:12px;opacity:.6;padding:16px}
+</style></head><body>
+<header><h1>DSA Cheatsheet (<span id="lt">Java</span>) <span id="pt"></span></h1><div class="pb"><div id="bar"></div></div><nav id="nav"></nav>
+<div class="tb"><input id="q" placeholder="Search... (press /)"><button id="fs">★ Starred</button><button id="fh">Hide solved</button><button id="lg">Lang: Java</button><button id="th">Theme</button><button id="ex">Export</button><label class="bt">Import<input id="im" type="file" accept=".json" hidden></label><button id="rs">Reset</button></div></header>
+<main id="m"></main><footer>Progress, stars and notes are saved in this browser only. Use Export to back up.</footer>
+<script>
+const D={
+"Arrays & Strings":{tip:"Capgemini-level basics. Edge cases check karo: empty, 1 element, negatives, duplicates. Strings: charAt, toCharArray, StringBuilder.",
+items:[
+["Rotate Array","3 reversals, O(n) time O(1) space",`void rotate(int[] a,int k){
+  int n=a.length; k%=n;
+  rev(a,0,n-1); rev(a,0,k-1); rev(a,k,n-1);
+}
+void rev(int[] a,int i,int j){while(i<j){int t=a[i];a[i++]=a[j];a[j--]=t;}}`],
+["Second Largest","Single pass, two variables",`int second(int[] a){
+  int m=Integer.MIN_VALUE,s=Integer.MIN_VALUE;
+  for(int x:a){ if(x>m){s=m;m=x;} else if(x>s&&x!=m) s=x; }
+  return s;
+}`],
+["Remove Duplicates (Sorted)","Two pointers, in place",`int rm(int[] a){
+  int k=1;
+  for(int i=1;i<a.length;i++) if(a[i]!=a[k-1]) a[k++]=a[i];
+  return k;
+}`],
+["Merge Sorted Arrays","Two pointers",`int[] merge(int[] a,int[] b){
+  int[] r=new int[a.length+b.length]; int i=0,j=0,k=0;
+  while(i<a.length&&j<b.length) r[k++]=a[i]<=b[j]?a[i++]:b[j++];
+  while(i<a.length) r[k++]=a[i++];
+  while(j<b.length) r[k++]=b[j++];
+  return r;
+}`],
+["Prefix Sum","Range sum in O(1) after O(n) build",`int[] p=new int[n+1];
+for(int i=0;i<n;i++) p[i+1]=p[i]+a[i];
+int range(int l,int r){ return p[r+1]-p[l]; }`],
+["Palindrome String","Two pointers from both ends",`boolean pal(String s){
+  int i=0,j=s.length()-1;
+  while(i<j) if(s.charAt(i++)!=s.charAt(j--)) return false;
+  return true;
+}`],
+["Valid Anagram","Count array of 26",`boolean ana(String a,String b){
+  if(a.length()!=b.length()) return false;
+  int[] c=new int[26];
+  for(int i=0;i<a.length();i++){c[a.charAt(i)-'a']++;c[b.charAt(i)-'a']--;}
+  for(int x:c) if(x!=0) return false;
+  return true;
+}`],
+["Reverse Words","split + reverse + join",`String rw(String s){
+  String[] w=s.trim().split(" +");
+  Collections.reverse(Arrays.asList(w));
+  return String.join(" ",w);
+}`]]},
+"Hashing & Window":{tip:"HashMap/HashSet se O(n^2) → O(n). Sorted array + pair → two pointers. Contiguous subarray/substring → sliding window ya prefix sum + map.",
+items:[
+["Two Sum","Map: value → index",`int[] two(int[] a,int t){
+  Map<Integer,Integer> m=new HashMap<>();
+  for(int i=0;i<a.length;i++){
+    Integer j=m.get(t-a[i]);
+    if(j!=null) return new int[]{j,i};
+    m.put(a[i],i);
+  }
+  return null;
+}`],
+["First Non-Repeating Char","Count pass, then check pass",`char first(String s){
+  int[] c=new int[256];
+  for(char ch:s.toCharArray()) c[ch]++;
+  for(char ch:s.toCharArray()) if(c[ch]==1) return ch;
+  return '_';
+}`],
+["Frequency / Duplicates","merge() counts; HashSet.add false = duplicate",`Map<Integer,Integer> f=new HashMap<>();
+for(int x:a) f.merge(x,1,Integer::sum);
+// duplicates: entries with value > 1
+Set<Integer> seen=new HashSet<>();
+for(int x:a) if(!seen.add(x)) System.out.println("dup "+x);`],
+["Pair with Given Sum (Sorted)","Two pointers",`boolean pair(int[] a,int t){
+  int i=0,j=a.length-1;
+  while(i<j){int s=a[i]+a[j];
+    if(s==t) return true;
+    if(s<t) i++; else j--;}
+  return false;
+}`],
+["Longest Substring Without Repeat","Sliding window + last index map",`int lsub(String s){
+  Map<Character,Integer> m=new HashMap<>(); int l=0,best=0;
+  for(int r=0;r<s.length();r++){
+    char c=s.charAt(r);
+    if(m.containsKey(c)) l=Math.max(l,m.get(c)+1);
+    m.put(c,r); best=Math.max(best,r-l+1);
+  }
+  return best;
+}`],
+["Max Sum of Size-k Window","Fixed window: add new, drop old",`int win(int[] a,int k){
+  int s=0; for(int i=0;i<k;i++) s+=a[i];
+  int b=s;
+  for(int i=k;i<a.length;i++){ s+=a[i]-a[i-k]; b=Math.max(b,s); }
+  return b;
+}`],
+["Subarray Sum Equals K","Prefix sum + map of counts",`int sub(int[] a,int k){
+  Map<Integer,Integer> m=new HashMap<>(); m.put(0,1);
+  int s=0,c=0;
+  for(int x:a){ s+=x; c+=m.getOrDefault(s-k,0); m.merge(s,1,Integer::sum); }
+  return c;
+}`]]},
+"Linked List":{tip:"Pointers: prev/curr/next. Dummy node se head edge cases bachte hain. Slow-fast pointer = middle, cycle.",
+items:[
+["Reverse Linked List","prev, curr, next",`class ListNode{int val;ListNode next;ListNode(int v){val=v;}}
+ListNode rev(ListNode h){
+  ListNode p=null;
+  while(h!=null){ListNode n=h.next;h.next=p;p=h;h=n;}
+  return p;
+}`],
+["Middle of List","Slow + fast pointer",`ListNode mid(ListNode h){
+  ListNode s=h,f=h;
+  while(f!=null&&f.next!=null){s=s.next;f=f.next.next;}
+  return s;
+}`],
+["Detect Cycle","Floyd: fast meets slow if cycle",`boolean cyc(ListNode h){
+  ListNode s=h,f=h;
+  while(f!=null&&f.next!=null){
+    s=s.next; f=f.next.next;
+    if(s==f) return true;
+  }
+  return false;
+}`],
+["Merge Two Sorted Lists","Dummy node",`ListNode merge(ListNode a,ListNode b){
+  ListNode d=new ListNode(0),t=d;
+  while(a!=null&&b!=null){
+    if(a.val<=b.val){t.next=a;a=a.next;} else {t.next=b;b=b.next;}
+    t=t.next;
+  }
+  t.next=a!=null?a:b; return d.next;
+}`],
+["Remove Nth From End","Gap of n between two pointers",`ListNode rmN(ListNode h,int n){
+  ListNode d=new ListNode(0); d.next=h; ListNode f=d,s=d;
+  for(int i=0;i<n;i++) f=f.next;
+  while(f.next!=null){f=f.next;s=s.next;}
+  s.next=s.next.next; return d.next;
+}`]]},
+"Stack & Queue":{tip:"Java: Deque<Integer> st=new ArrayDeque<>() (push/pop/peek). Queue<Integer> q=new LinkedList<>() (add/poll). Matching / next greater → stack.",
+items:[
+["Balanced Parentheses","Push opens, pop on close",`boolean bal(String s){
+  Deque<Character> st=new ArrayDeque<>();
+  for(char c:s.toCharArray()){
+    if("([{".indexOf(c)>=0) st.push(c);
+    else{
+      if(st.isEmpty()) return false;
+      if("([{".indexOf(st.pop())!=")]}".indexOf(c)) return false;
+    }
+  }
+  return st.isEmpty();
+}`],
+["Next Greater Element","Monotonic stack of indices, O(n)",`int[] nge(int[] a){
+  int[] r=new int[a.length]; Arrays.fill(r,-1);
+  Deque<Integer> st=new ArrayDeque<>();
+  for(int i=0;i<a.length;i++){
+    while(!st.isEmpty()&&a[st.peek()]<a[i]) r[st.pop()]=a[i];
+    st.push(i);
+  }
+  return r;
+}`],
+["Queue using Two Stacks","Move in→out only when out empty",`class MyQ{
+  Deque<Integer> in=new ArrayDeque<>(),out=new ArrayDeque<>();
+  void push(int x){in.push(x);}
+  int pop(){peek();return out.pop();}
+  int peek(){
+    if(out.isEmpty()) while(!in.isEmpty()) out.push(in.pop());
+    return out.peek();
+  }
+}`]]},
+"Sort, Search & Math":{tip:"Bubble/Selection/Insertion O(n^2); Merge O(n log n) stable; Quick avg O(n log n). Binary search sirf sorted data pe. Math: loops till sqrt(n).",
+items:[
+["Binary Search","O(log n); mid = l+(h-l)/2",`int bs(int[] a,int t){
+  int l=0,h=a.length-1;
+  while(l<=h){
+    int m=l+(h-l)/2;
+    if(a[m]==t) return m;
+    if(a[m]<t) l=m+1; else h=m-1;
+  }
+  return -1;
+}`],
+["Merge Sort","Divide, sort halves, merge",`void ms(int[] a,int l,int r){
+  if(l>=r) return;
+  int m=(l+r)/2; ms(a,l,m); ms(a,m+1,r);
+  int[] t=new int[r-l+1]; int i=l,j=m+1,k=0;
+  while(i<=m&&j<=r) t[k++]=a[i]<=a[j]?a[i++]:a[j++];
+  while(i<=m) t[k++]=a[i++];
+  while(j<=r) t[k++]=a[j++];
+  System.arraycopy(t,0,a,l,t.length);
+}`],
+["Quick Sort","Pivot = last, partition",`void qs(int[] a,int l,int h){
+  if(l>=h) return;
+  int p=a[h],i=l;
+  for(int j=l;j<h;j++) if(a[j]<p){int t=a[i];a[i++]=a[j];a[j]=t;}
+  int t=a[i];a[i]=a[h];a[h]=t;
+  qs(a,l,i-1); qs(a,i+1,h);
+}`],
+["Prime / Sieve","Check till sqrt(n); sieve for all primes ≤ n",`boolean prime(int n){
+  if(n<2) return false;
+  for(int i=2;(long)i*i<=n;i++) if(n%i==0) return false;
+  return true;
+}
+boolean[] comp=new boolean[n+1]; // sieve: true = not prime
+for(int i=2;(long)i*i<=n;i++) if(!comp[i])
+  for(int j=i*i;j<=n;j+=i) comp[j]=true;`],
+["GCD & LCM","Euclid",`int gcd(int a,int b){ return b==0?a:gcd(b,a%b); }
+long lcm(int a,int b){ return (long)a/gcd(a,b)*b; }`],
+["Number Basics","Reverse, palindrome, Armstrong, factorial",`int rev=0,t=n;
+while(t>0){rev=rev*10+t%10;t/=10;}   // reverse digits
+boolean pal=(rev==n);                 // palindrome number
+int sum=0,len=String.valueOf(n).length();
+for(int x=n;x>0;x/=10) sum+=(int)Math.pow(x%10,len);
+boolean arm=(sum==n);                 // Armstrong
+long f=1; for(int i=2;i<=k;i++) f*=i; // factorial`],
+["Pattern Printing","Nested loops / String.repeat",`for(int i=1;i<=n;i++)
+  System.out.println(" ".repeat(n-i)+"*".repeat(2*i-1)); // pyramid
+// right triangle: "*".repeat(i)`],
+["Number System Conversion","Decimal ↔ binary",`String s="";
+for(int x=n;x>0;x/=2) s=x%2+s;        // manual decimal → binary
+String b=Integer.toBinaryString(n);   // built-in
+int d=Integer.parseInt("1010",2);     // binary → decimal (10)`]]},
+"Recursion":{tip:"Template: base case → choose → recurse → un-choose (backtrack). Time = branches^depth. Pehle state aur choices likho.",
+items:[
+["Subsets","Include / exclude. O(2^n)",`void sub(int[] a,int i,List<Integer> cur,List<List<Integer>> res){
+  if(i==a.length){res.add(new ArrayList<>(cur));return;}
+  cur.add(a[i]); sub(a,i+1,cur,res);   // include
+  cur.remove(cur.size()-1); sub(a,i+1,cur,res); // exclude
+}`],
+["Permutations","Used[] array se. O(n!·n)",`void perm(int[] a,boolean[] u,List<Integer> cur,List<List<Integer>> res){
+  if(cur.size()==a.length){res.add(new ArrayList<>(cur));return;}
+  for(int i=0;i<a.length;i++){
+    if(u[i])continue;
+    u[i]=true;cur.add(a[i]);
+    perm(a,u,cur,res);
+    cur.remove(cur.size()-1);u[i]=false;
+  }
+}`],
+["Combination Sum","Reuse allowed → recurse with same i",`void comb(int[] a,int i,int t,List<Integer> cur,List<List<Integer>> res){
+  if(t==0){res.add(new ArrayList<>(cur));return;}
+  if(t<0||i==a.length)return;
+  cur.add(a[i]); comb(a,i,t-a[i],cur,res);
+  cur.remove(cur.size()-1); comb(a,i+1,t,cur,res);
+}`],
+["N-Queens","Row by row; col, diag, anti-diag sets",`int cnt=0;
+void solve(int r,int n,boolean[] c,boolean[] d1,boolean[] d2){
+  if(r==n){cnt++;return;}
+  for(int j=0;j<n;j++){
+    if(c[j]||d1[r+j]||d2[r-j+n-1])continue;
+    c[j]=d1[r+j]=d2[r-j+n-1]=true;
+    solve(r+1,n,c,d1,d2);
+    c[j]=d1[r+j]=d2[r-j+n-1]=false;
+  }
+}`],
+["Tower of Hanoi","2^n − 1 moves",`void hanoi(int n,char a,char b,char c){
+  if(n==0)return;
+  hanoi(n-1,a,c,b);
+  System.out.println(a+"->"+c);
+  hanoi(n-1,b,a,c);
+}`],
+["Sudoku / Word Search","Same backtracking: try → recurse → undo",`boolean exist(char[][] g,String w,int i,int j,int k){
+  if(k==w.length())return true;
+  if(i<0||j<0||i>=g.length||j>=g[0].length||g[i][j]!=w.charAt(k))return false;
+  char t=g[i][j];g[i][j]='#';
+  boolean f=exist(g,w,i+1,j,k+1)||exist(g,w,i-1,j,k+1)
+         ||exist(g,w,i,j+1,k+1)||exist(g,w,i,j-1,k+1);
+  g[i][j]=t;return f;
+}`]]},
+"Trees":{tip:"Almost sab recursion hai: solve(left), solve(right), combine. BST inorder = sorted. Level order = BFS with queue.",
+items:[
+["Traversals","Pre / In / Post (DFS)",`class Node{int val;Node left,right;Node(int v){val=v;}}
+void in(Node r){ if(r==null)return; in(r.left); System.out.print(r.val); in(r.right); }
+// pre: print → L → R   |  post: L → R → print`],
+["Level Order (BFS)","Queue + level size",`List<List<Integer>> level(Node r){
+  List<List<Integer>> res=new ArrayList<>(); if(r==null)return res;
+  Queue<Node> q=new LinkedList<>(); q.add(r);
+  while(!q.isEmpty()){
+    int s=q.size(); List<Integer> l=new ArrayList<>();
+    while(s-->0){Node n=q.poll();l.add(n.val);
+      if(n.left!=null)q.add(n.left); if(n.right!=null)q.add(n.right);}
+    res.add(l);
+  }
+  return res;
+}`],
+["Height & Diameter","Diameter = max(lh + rh) at any node",`int best=0;
+int h(Node r){
+  if(r==null)return 0;
+  int l=h(r.left), rt=h(r.right);
+  best=Math.max(best,l+rt);      // diameter (edges)
+  return 1+Math.max(l,rt);
+}`],
+["Lowest Common Ancestor","Dono side mile → current node LCA",`Node lca(Node r,Node p,Node q){
+  if(r==null||r==p||r==q)return r;
+  Node l=lca(r.left,p,q), rt=lca(r.right,p,q);
+  return (l!=null&&rt!=null)?r:(l!=null?l:rt);
+}`],
+["Validate BST","Range (min,max) pass karo",`boolean ok(Node r,long lo,long hi){
+  if(r==null)return true;
+  if(r.val<=lo||r.val>=hi)return false;
+  return ok(r.left,lo,r.val)&&ok(r.right,r.val,hi);
+}  // call: ok(root,Long.MIN_VALUE,Long.MAX_VALUE)`],
+["Max Path Sum","Gain = max(0, child gain)",`int max=Integer.MIN_VALUE;
+int gain(Node r){
+  if(r==null)return 0;
+  int l=Math.max(0,gain(r.left)), rt=Math.max(0,gain(r.right));
+  max=Math.max(max,r.val+l+rt);
+  return r.val+Math.max(l,rt);
+}`],
+["Invert / Symmetric / Same Tree","Simple recursion trio",`Node invert(Node r){
+  if(r==null)return null;
+  Node t=r.left; r.left=invert(r.right); r.right=invert(t); return r;
+}
+boolean same(Node a,Node b){
+  if(a==null||b==null)return a==b;
+  return a.val==b.val&&same(a.left,b.left)&&same(a.right,b.right);
+}  // symmetric: mirror(a.left,a.right) with a.left↔b.right`]]},
+"Graphs":{tip:"Representation: List<List<Integer>> adj. Shortest path unweighted → BFS; weighted → Dijkstra; dependencies → Topo sort; components → DSU/DFS.",
+items:[
+["BFS / DFS","O(V+E)",`List<List<Integer>> adj; // adj.get(u) = neighbours
+void bfs(int s,int n){
+  boolean[] vis=new boolean[n]; Queue<Integer> q=new LinkedList<>();
+  q.add(s); vis[s]=true;
+  while(!q.isEmpty()){int u=q.poll();
+    for(int v:adj.get(u)) if(!vis[v]){vis[v]=true;q.add(v);}}
+}
+void dfs(int u,boolean[] vis){
+  vis[u]=true;
+  for(int v:adj.get(u)) if(!vis[v]) dfs(v,vis);
+}`],
+["Number of Islands","Grid DFS, sink visited cells",`int islands(char[][] g){
+  int c=0;
+  for(int i=0;i<g.length;i++)for(int j=0;j<g[0].length;j++)
+    if(g[i][j]=='1'){c++;sink(g,i,j);}
+  return c;
+}
+void sink(char[][] g,int i,int j){
+  if(i<0||j<0||i>=g.length||j>=g[0].length||g[i][j]!='1')return;
+  g[i][j]='0'; sink(g,i+1,j);sink(g,i-1,j);sink(g,i,j+1);sink(g,i,j-1);
+}`],
+["Topological Sort (Kahn)","Course Schedule: order.size()==n → no cycle",`List<Integer> topo(int n,List<List<Integer>> adj){
+  int[] in=new int[n];
+  for(List<Integer> l:adj)for(int v:l)in[v]++;
+  Queue<Integer> q=new LinkedList<>();
+  for(int i=0;i<n;i++)if(in[i]==0)q.add(i);
+  List<Integer> ord=new ArrayList<>();
+  while(!q.isEmpty()){int u=q.poll();ord.add(u);
+    for(int v:adj.get(u)) if(--in[v]==0)q.add(v);}
+  return ord;
+}`],
+["Cycle Detection","Undirected: parent check. Directed: recursion stack",`boolean cyc(int u,int[] st){ // 0=new,1=in stack,2=done
+  st[u]=1;
+  for(int v:adj.get(u)){
+    if(st[v]==1)return true;
+    if(st[v]==0&&cyc(v,st))return true;
+  }
+  st[u]=2;return false;
+}`],
+["Dijkstra","Non-negative weights. O(E log V)",`int[] dijkstra(int s,int n,List<List<int[]>> adj){ // int[]{v,w}
+  int[] d=new int[n]; Arrays.fill(d,Integer.MAX_VALUE); d[s]=0;
+  PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->a[1]-b[1]);
+  pq.add(new int[]{s,0});
+  while(!pq.isEmpty()){
+    int[] c=pq.poll(); int u=c[0];
+    if(c[1]>d[u])continue;
+    for(int[] e:adj.get(u))
+      if(d[u]+e[1]<d[e[0]]){d[e[0]]=d[u]+e[1];pq.add(new int[]{e[0],d[e[0]]});}
+  }
+  return d;
+}`],
+["Union-Find (DSU)","Components, Kruskal MST, redundant edge",`int[] p;
+int find(int x){return p[x]==x?x:(p[x]=find(p[x]));}
+boolean union(int a,int b){
+  a=find(a);b=find(b);
+  if(a==b)return false;   // already connected → cycle
+  p[a]=b;return true;
+}  // init: p[i]=i`],
+["Clone Graph / Bipartite / Rotten Oranges","Pattern: BFS/DFS + map ya color[]",`boolean bip(int s,int[] col){ // col init -1
+  Queue<Integer> q=new LinkedList<>(); q.add(s); col[s]=0;
+  while(!q.isEmpty()){int u=q.poll();
+    for(int v:adj.get(u)){
+      if(col[v]==-1){col[v]=1-col[u];q.add(v);}
+      else if(col[v]==col[u])return false;}}
+  return true;
+}`]]},
+"DP":{tip:"Steps: 1) state define 2) transition 3) base case 4) order (memo top-down / tabulation) 5) space optimize. Overlapping subproblems + optimal substructure = DP.",
+items:[
+["Fibonacci / Climbing Stairs","dp[i]=dp[i-1]+dp[i-2], O(1) space",`int climb(int n){
+  int a=1,b=1;
+  for(int i=2;i<=n;i++){int c=a+b;a=b;b=c;}
+  return b;
+}`],
+["House Robber","dp[i]=max(dp[i-1], dp[i-2]+a[i])",`int rob(int[] a){
+  int p=0,c=0;
+  for(int x:a){int t=Math.max(c,p+x);p=c;c=t;}
+  return c;
+}`],
+["Kadane (Max Subarray)","cur = max(x, cur+x)",`int kadane(int[] a){
+  int cur=a[0],best=a[0];
+  for(int i=1;i<a.length;i++){cur=Math.max(a[i],cur+a[i]);best=Math.max(best,cur);}
+  return best;
+}`],
+["0/1 Knapsack","Capacity loop reverse (1D)",`int knap(int[] w,int[] v,int W){
+  int[] dp=new int[W+1];
+  for(int i=0;i<w.length;i++)
+    for(int c=W;c>=w[i];c--)
+      dp[c]=Math.max(dp[c],v[i]+dp[c-w[i]]);
+  return dp[W];
+}  // Subset sum, partition equal subset = same pattern`],
+["Coin Change","Min coins; unbounded → forward loop",`int coin(int[] cs,int amt){
+  int[] dp=new int[amt+1]; Arrays.fill(dp,amt+1); dp[0]=0;
+  for(int i=1;i<=amt;i++)
+    for(int c:cs) if(c<=i) dp[i]=Math.min(dp[i],dp[i-c]+1);
+  return dp[amt]>amt?-1:dp[amt];
+}  // ways count: for(c) for(i) dp[i]+=dp[i-c]`],
+["Longest Increasing Subsequence","O(n log n) binary search",`int lis(int[] a){
+  List<Integer> t=new ArrayList<>();
+  for(int x:a){
+    int i=Collections.binarySearch(t,x);
+    if(i<0)i=-(i+1);
+    if(i==t.size())t.add(x); else t.set(i,x);
+  }
+  return t.size();
+}`],
+["Longest Common Subsequence","Match → diag+1, else max(up,left)",`int lcs(String a,String b){
+  int n=a.length(),m=b.length(); int[][] dp=new int[n+1][m+1];
+  for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)
+    dp[i][j]=a.charAt(i-1)==b.charAt(j-1)?dp[i-1][j-1]+1:Math.max(dp[i-1][j],dp[i][j-1]);
+  return dp[n][m];
+}  // LPS = lcs(s, reverse(s))`],
+["Edit Distance","insert / delete / replace",`int edit(String a,String b){
+  int n=a.length(),m=b.length(); int[][] dp=new int[n+1][m+1];
+  for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j;
+  for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)
+    dp[i][j]=a.charAt(i-1)==b.charAt(j-1)?dp[i-1][j-1]
+      :1+Math.min(dp[i-1][j-1],Math.min(dp[i-1][j],dp[i][j-1]));
+  return dp[n][m];
+}`],
+["Grid Paths / Min Path Sum","dp[i][j] = grid + min(up,left)",`int minPath(int[][] g){
+  int n=g.length,m=g[0].length;
+  for(int i=0;i<n;i++)for(int j=0;j<m;j++){
+    if(i==0&&j==0)continue;
+    int up=i>0?g[i-1][j]:Integer.MAX_VALUE, left=j>0?g[i][j-1]:Integer.MAX_VALUE;
+    g[i][j]+=Math.min(up,left);
+  }
+  return g[n-1][m-1];
+}  // unique paths: dp[i][j]=dp[i-1][j]+dp[i][j-1]`],
+["Memoization Template","Top-down: recursion + cache",`int[] memo=new int[100]; // fill -1
+int f(int n){
+  if(n<=1)return n;
+  if(memo[n]!=-1)return memo[n];
+  return memo[n]=f(n-1)+f(n-2);
+}
+// More: Word Break, Palindrome Partition, Matrix Chain, Buy/Sell Stock, Egg Drop`]]}
+};
+const S={
+"Subsets":"Given an array of distinct integers, return all possible subsets (the power set).",
+"Permutations":"Given an array of distinct integers, return all possible orderings of its elements.",
+"Combination Sum":"Given distinct candidates and a target, return all unique combinations that sum to target. Each number may be used unlimited times.",
+"N-Queens":"Place n queens on an n×n board so that no two attack each other (same row, column or diagonal). Count or list all solutions.",
+"Tower of Hanoi":"Move n disks from rod A to rod C using rod B. Move one disk at a time and never place a larger disk on a smaller one.",
+"Sudoku / Word Search":"Word Search: given a char grid and a word, return true if the word can be formed by adjacent (up/down/left/right) cells without reusing a cell. Sudoku uses the same try-recurse-undo idea.",
+"Traversals":"Given a binary tree, print its preorder, inorder and postorder traversals.",
+"Level Order (BFS)":"Given a binary tree, return its node values level by level, left to right.",
+"Height & Diameter":"Find the height of a binary tree, and its diameter: the length of the longest path between any two nodes.",
+"Lowest Common Ancestor":"Given a binary tree and two nodes p and q, find their lowest common ancestor (deepest node that has both as descendants).",
+"Validate BST":"Given a binary tree, check whether it is a valid binary search tree (left < node < right for every node, not just the parent).",
+"Max Path Sum":"Find the maximum sum of any path in a binary tree. A path can start and end at any node but must follow parent-child links.",
+"Invert / Symmetric / Same Tree":"Invert: mirror a binary tree. Same Tree: check if two trees are identical. Symmetric: check if a tree is a mirror of itself.",
+"BFS / DFS":"Given a graph and a source node, visit every reachable node using BFS (queue) and DFS (recursion/stack).",
+"Number of Islands":"Given a grid of '1' (land) and '0' (water), count the number of islands. An island is land connected horizontally or vertically.",
+"Topological Sort (Kahn)":"Given a directed graph of n nodes, return a linear order where every edge u→v has u before v. Course Schedule: with prerequisites, can all n courses be finished? (false if a cycle exists)",
+"Cycle Detection":"Given a directed (or undirected) graph, detect whether it contains a cycle.",
+"Dijkstra":"Given a weighted graph with non-negative edges and a source, find the shortest distance from the source to every node.",
+"Union-Find (DSU)":"Support union(a,b) and find(a) efficiently to group nodes. Used for counting connected components, detecting a redundant edge, and Kruskal's MST.",
+"Clone Graph / Bipartite / Rotten Oranges":"Is Graph Bipartite: can nodes be 2-coloured so no edge joins same-coloured nodes? (Clone Graph: deep copy a graph; Rotten Oranges: min minutes for rot to spread, via multi-source BFS.)",
+"Fibonacci / Climbing Stairs":"You climb n stairs taking 1 or 2 steps at a time. In how many distinct ways can you reach the top?",
+"House Robber":"Given the money in each house in a row, find the maximum you can rob without robbing two adjacent houses.",
+"Kadane (Max Subarray)":"Given an integer array, find the contiguous subarray with the largest sum and return that sum.",
+"0/1 Knapsack":"Given item weights, values and a capacity W, pick items (each at most once) to maximise total value without exceeding W.",
+"Coin Change":"Given coin denominations and an amount, find the fewest coins needed to make that amount (or -1 if impossible).",
+"Longest Increasing Subsequence":"Given an integer array, find the length of the longest strictly increasing subsequence (not necessarily contiguous).",
+"Longest Common Subsequence":"Given two strings, find the length of their longest common subsequence.",
+"Edit Distance":"Given two strings, find the minimum number of insert, delete or replace operations to convert one into the other.",
+"Grid Paths / Min Path Sum":"Given a grid of non-negative numbers, find a path from top-left to bottom-right (moving only right or down) with the minimum sum.",
+"Memoization Template":"Any recursive problem with overlapping subproblems (like Fibonacci): cache results so each state is computed only once.",
+"Rotate Array":"Rotate an array to the right by k steps. Example: [1,2,3,4,5], k=2 → [4,5,1,2,3].",
+"Second Largest":"Find the second largest distinct element in an array.",
+"Remove Duplicates (Sorted)":"Given a sorted array, remove duplicates in place and return the count of unique elements.",
+"Merge Sorted Arrays":"Merge two sorted arrays into one sorted array.",
+"Prefix Sum":"Given an array and many queries (l, r), return the sum of a[l..r] for each query quickly.",
+"Palindrome String":"Check whether a string reads the same forwards and backwards.",
+"Valid Anagram":"Check whether two strings contain the same characters with the same counts (e.g. listen / silent).",
+"Reverse Words":"Reverse the order of words in a sentence. Example: \"I love Java\" → \"Java love I\".",
+"Two Sum":"Given an array and a target, return indices of the two numbers that add up to the target.",
+"First Non-Repeating Char":"Find the first character in a string that appears only once.",
+"Frequency / Duplicates":"Count how many times each element occurs, and find the elements that repeat.",
+"Pair with Given Sum (Sorted)":"Given a sorted array and a target, check whether any two elements sum to the target.",
+"Longest Substring Without Repeat":"Find the length of the longest substring with no repeating characters. Example: \"abcabcbb\" → 3.",
+"Max Sum of Size-k Window":"Given an array and k, find the maximum sum of any k consecutive elements.",
+"Subarray Sum Equals K":"Count the contiguous subarrays whose sum equals k (array may contain negatives).",
+"Reverse Linked List":"Reverse a singly linked list and return the new head.",
+"Middle of List":"Return the middle node of a linked list (second middle if the length is even).",
+"Detect Cycle":"Check whether a linked list has a cycle (a node's next points back to an earlier node).",
+"Merge Two Sorted Lists":"Merge two sorted linked lists into one sorted list.",
+"Remove Nth From End":"Remove the nth node from the end of a linked list in one pass and return the head.",
+"Balanced Parentheses":"Given a string of ()[]{} brackets, check whether every bracket is closed in the correct order.",
+"Next Greater Element":"For each element, find the next element to its right that is greater; use -1 if none. [4,5,2,10] → [5,10,10,-1].",
+"Queue using Two Stacks":"Implement a queue (push, pop, peek) using only two stacks.",
+"Binary Search":"Given a sorted array and a target, return its index or -1 if absent, in O(log n).",
+"Merge Sort":"Sort an array in O(n log n) using divide and conquer.",
+"Quick Sort":"Sort an array by choosing a pivot, partitioning around it, and recursing on both sides.",
+"Prime / Sieve":"Check whether n is prime, and list all primes up to n efficiently.",
+"GCD & LCM":"Find the greatest common divisor and least common multiple of two numbers.",
+"Number Basics":"Reverse a number, check palindrome number, check Armstrong number (e.g. 153), and compute factorial.",
+"Pattern Printing":"Print patterns such as a star pyramid or right triangle for a given n.",
+"Number System Conversion":"Convert a decimal number to binary and a binary string back to decimal."};
+const C={
+"Rotate Array":`void rev(vector<int>&a,int i,int j){while(i<j)swap(a[i++],a[j--]);}
+void rotate(vector<int>&a,int k){
+  int n=a.size(); k%=n;
+  rev(a,0,n-1); rev(a,0,k-1); rev(a,k,n-1);
+}`,
+"Second Largest":`int second(vector<int>&a){
+  int m=INT_MIN,s=INT_MIN;
+  for(int x:a){ if(x>m){s=m;m=x;} else if(x>s&&x!=m) s=x; }
+  return s;
+}`,
+"Remove Duplicates (Sorted)":`int rm(vector<int>&a){
+  int k=1;
+  for(int i=1;i<a.size();i++) if(a[i]!=a[k-1]) a[k++]=a[i];
+  return k;
+}`,
+"Merge Sorted Arrays":`vector<int> mergeArr(vector<int>&a,vector<int>&b){
+  vector<int> r; int i=0,j=0;
+  while(i<a.size()&&j<b.size()) r.push_back(a[i]<=b[j]?a[i++]:b[j++]);
+  while(i<a.size()) r.push_back(a[i++]);
+  while(j<b.size()) r.push_back(b[j++]);
+  return r;
+}`,
+"Prefix Sum":`vector<int> p(n+1,0);
+for(int i=0;i<n;i++) p[i+1]=p[i]+a[i];
+int range(int l,int r){ return p[r+1]-p[l]; }`,
+"Palindrome String":`bool pal(string&s){
+  int i=0,j=s.size()-1;
+  while(i<j) if(s[i++]!=s[j--]) return false;
+  return true;
+}`,
+"Valid Anagram":`bool ana(string a,string b){
+  if(a.size()!=b.size()) return false;
+  int c[26]={};
+  for(int i=0;i<a.size();i++){c[a[i]-'a']++;c[b[i]-'a']--;}
+  for(int x:c) if(x) return false;
+  return true;
+}`,
+"Reverse Words":`string rw(string s){
+  stringstream ss(s); string w; vector<string> v;
+  while(ss>>w) v.push_back(w);
+  reverse(v.begin(),v.end());
+  string r;
+  for(int i=0;i<v.size();i++) r+=(i?" ":"")+v[i];
+  return r;
+}`,
+"Two Sum":`vector<int> two(vector<int>&a,int t){
+  unordered_map<int,int> m;
+  for(int i=0;i<a.size();i++){
+    if(m.count(t-a[i])) return {m[t-a[i]],i};
+    m[a[i]]=i;
+  }
+  return {};
+}`,
+"First Non-Repeating Char":`char first(string&s){
+  int c[256]={};
+  for(unsigned char ch:s) c[ch]++;
+  for(unsigned char ch:s) if(c[ch]==1) return ch;
+  return '_';
+}`,
+"Frequency / Duplicates":`unordered_map<int,int> f;
+for(int x:a) f[x]++;
+// duplicates: entries with count > 1
+unordered_set<int> seen;
+for(int x:a) if(!seen.insert(x).second) cout<<"dup "<<x<<endl;`,
+"Pair with Given Sum (Sorted)":`bool pairSum(vector<int>&a,int t){
+  int i=0,j=a.size()-1;
+  while(i<j){int s=a[i]+a[j];
+    if(s==t) return true;
+    if(s<t) i++; else j--;}
+  return false;
+}`,
+"Longest Substring Without Repeat":`int lsub(string&s){
+  unordered_map<char,int> m; int l=0,best=0;
+  for(int r=0;r<s.size();r++){
+    if(m.count(s[r])) l=max(l,m[s[r]]+1);
+    m[s[r]]=r; best=max(best,r-l+1);
+  }
+  return best;
+}`,
+"Max Sum of Size-k Window":`int win(vector<int>&a,int k){
+  int s=0; for(int i=0;i<k;i++) s+=a[i];
+  int b=s;
+  for(int i=k;i<a.size();i++){ s+=a[i]-a[i-k]; b=max(b,s); }
+  return b;
+}`,
+"Subarray Sum Equals K":`int sub(vector<int>&a,int k){
+  unordered_map<int,int> m; m[0]=1;
+  int s=0,c=0;
+  for(int x:a){ s+=x; if(m.count(s-k)) c+=m[s-k]; m[s]++; }
+  return c;
+}`,
+"Reverse Linked List":`struct ListNode{int val;ListNode*next=nullptr;ListNode(int v):val(v){}};
+ListNode* rev(ListNode*h){
+  ListNode*p=nullptr;
+  while(h){ListNode*n=h->next;h->next=p;p=h;h=n;}
+  return p;
+}`,
+"Middle of List":`ListNode* mid(ListNode*h){
+  ListNode*s=h,*f=h;
+  while(f&&f->next){s=s->next;f=f->next->next;}
+  return s;
+}`,
+"Detect Cycle":`bool cyc(ListNode*h){
+  ListNode*s=h,*f=h;
+  while(f&&f->next){
+    s=s->next; f=f->next->next;
+    if(s==f) return true;
+  }
+  return false;
+}`,
+"Merge Two Sorted Lists":`ListNode* mergeLists(ListNode*a,ListNode*b){
+  ListNode d(0),*t=&d;
+  while(a&&b){
+    if(a->val<=b->val){t->next=a;a=a->next;} else {t->next=b;b=b->next;}
+    t=t->next;
+  }
+  t->next=a?a:b; return d.next;
+}`,
+"Remove Nth From End":`ListNode* rmN(ListNode*h,int n){
+  ListNode d(0); d.next=h; ListNode*f=&d,*s=&d;
+  for(int i=0;i<n;i++) f=f->next;
+  while(f->next){f=f->next;s=s->next;}
+  s->next=s->next->next; return d.next;
+}`,
+"Balanced Parentheses":`bool bal(string&s){
+  stack<char> st;
+  for(char c:s){
+    if(c=='('||c=='['||c=='{') st.push(c);
+    else{
+      if(st.empty()) return false;
+      char o=st.top(); st.pop();
+      if(string("([{").find(o)!=string(")]}").find(c)) return false;
+    }
+  }
+  return st.empty();
+}`,
+"Next Greater Element":`vector<int> nge(vector<int>&a){
+  vector<int> r(a.size(),-1); stack<int> st;
+  for(int i=0;i<a.size();i++){
+    while(!st.empty()&&a[st.top()]<a[i]){r[st.top()]=a[i];st.pop();}
+    st.push(i);
+  }
+  return r;
+}`,
+"Queue using Two Stacks":`struct MyQ{
+  stack<int> in,out;
+  void push(int x){in.push(x);}
+  int peek(){
+    if(out.empty()) while(!in.empty()){out.push(in.top());in.pop();}
+    return out.top();
+  }
+  int pop(){int x=peek();out.pop();return x;}
+};`,
+"Binary Search":`int bs(vector<int>&a,int t){
+  int l=0,h=a.size()-1;
+  while(l<=h){
+    int m=l+(h-l)/2;
+    if(a[m]==t) return m;
+    if(a[m]<t) l=m+1; else h=m-1;
+  }
+  return -1;
+}`,
+"Merge Sort":`void ms(vector<int>&a,int l,int r){
+  if(l>=r) return;
+  int m=(l+r)/2; ms(a,l,m); ms(a,m+1,r);
+  vector<int> t; int i=l,j=m+1;
+  while(i<=m&&j<=r) t.push_back(a[i]<=a[j]?a[i++]:a[j++]);
+  while(i<=m) t.push_back(a[i++]);
+  while(j<=r) t.push_back(a[j++]);
+  copy(t.begin(),t.end(),a.begin()+l);
+}`,
+"Quick Sort":`void qs(vector<int>&a,int l,int h){
+  if(l>=h) return;
+  int p=a[h],i=l;
+  for(int j=l;j<h;j++) if(a[j]<p) swap(a[i++],a[j]);
+  swap(a[i],a[h]);
+  qs(a,l,i-1); qs(a,i+1,h);
+}`,
+"Prime / Sieve":`bool prime(int n){
+  if(n<2) return false;
+  for(long long i=2;i*i<=n;i++) if(n%i==0) return false;
+  return true;
+}
+vector<bool> comp(n+1,false); // sieve: true = not prime
+for(long long i=2;i*i<=n;i++) if(!comp[i])
+  for(long long j=i*i;j<=n;j+=i) comp[j]=true;`,
+"GCD & LCM":`int gcdf(int a,int b){ return b==0?a:gcdf(b,a%b); } // or std::gcd (C++17)
+long long lcmf(int a,int b){ return (long long)a/gcdf(a,b)*b; }`,
+"Number Basics":`int rev=0,t=n;
+while(t>0){rev=rev*10+t%10;t/=10;}   // reverse digits
+bool pal=(rev==n);                    // palindrome number
+int sum=0,len=to_string(n).size();
+for(int x=n;x>0;x/=10) sum+=(int)round(pow(x%10,len));
+bool arm=(sum==n);                    // Armstrong
+long long f=1; for(int i=2;i<=k;i++) f*=i; // factorial`,
+"Pattern Printing":`for(int i=1;i<=n;i++)
+  cout<<string(n-i,' ')<<string(2*i-1,'*')<<endl; // pyramid
+// right triangle: string(i,'*')`,
+"Number System Conversion":`string s;
+for(int x=n;x>0;x/=2) s=char('0'+x%2)+s;  // manual decimal → binary
+string b=bitset<32>(n).to_string();       // built-in (32 bits)
+int d=stoi("1010",nullptr,2);             // binary → decimal (10)`,
+"Subsets":`void sub(vector<int>&a,int i,vector<int>&cur,vector<vector<int>>&res){
+  if(i==a.size()){res.push_back(cur);return;}
+  cur.push_back(a[i]); sub(a,i+1,cur,res);   // include
+  cur.pop_back(); sub(a,i+1,cur,res);        // exclude
+}`,
+"Permutations":`void perm(vector<int>&a,vector<bool>&u,vector<int>&cur,vector<vector<int>>&res){
+  if(cur.size()==a.size()){res.push_back(cur);return;}
+  for(int i=0;i<a.size();i++){
+    if(u[i]) continue;
+    u[i]=true; cur.push_back(a[i]);
+    perm(a,u,cur,res);
+    cur.pop_back(); u[i]=false;
+  }
+}`,
+"Combination Sum":`void comb(vector<int>&a,int i,int t,vector<int>&cur,vector<vector<int>>&res){
+  if(t==0){res.push_back(cur);return;}
+  if(t<0||i==a.size()) return;
+  cur.push_back(a[i]); comb(a,i,t-a[i],cur,res);
+  cur.pop_back(); comb(a,i+1,t,cur,res);
+}`,
+"N-Queens":`int cnt=0; // c: size n, d1/d2: size 2n
+void solve(int r,int n,vector<bool>&c,vector<bool>&d1,vector<bool>&d2){
+  if(r==n){cnt++;return;}
+  for(int j=0;j<n;j++){
+    if(c[j]||d1[r+j]||d2[r-j+n-1]) continue;
+    c[j]=d1[r+j]=d2[r-j+n-1]=true;
+    solve(r+1,n,c,d1,d2);
+    c[j]=d1[r+j]=d2[r-j+n-1]=false;
+  }
+}`,
+"Tower of Hanoi":`void hanoi(int n,char a,char b,char c){
+  if(n==0) return;
+  hanoi(n-1,a,c,b);
+  cout<<a<<"->"<<c<<endl;
+  hanoi(n-1,b,a,c);
+}`,
+"Sudoku / Word Search":`bool exist(vector<vector<char>>&g,string&w,int i,int j,int k){
+  if(k==w.size()) return true;
+  if(i<0||j<0||i>=g.size()||j>=g[0].size()||g[i][j]!=w[k]) return false;
+  char t=g[i][j]; g[i][j]='#';
+  bool f=exist(g,w,i+1,j,k+1)||exist(g,w,i-1,j,k+1)
+      ||exist(g,w,i,j+1,k+1)||exist(g,w,i,j-1,k+1);
+  g[i][j]=t; return f;
+}`,
+"Traversals":`struct Node{int val;Node*left=nullptr,*right=nullptr;Node(int v):val(v){}};
+void in(Node*r){ if(!r)return; in(r->left); cout<<r->val<<" "; in(r->right); }
+// pre: print → L → R   |  post: L → R → print`,
+"Level Order (BFS)":`vector<vector<int>> level(Node*r){
+  vector<vector<int>> res; if(!r) return res;
+  queue<Node*> q; q.push(r);
+  while(!q.empty()){
+    int s=q.size(); vector<int> l;
+    while(s--){Node*n=q.front();q.pop();l.push_back(n->val);
+      if(n->left)q.push(n->left); if(n->right)q.push(n->right);}
+    res.push_back(l);
+  }
+  return res;
+}`,
+"Height & Diameter":`int best=0;
+int h(Node*r){
+  if(!r) return 0;
+  int l=h(r->left), rt=h(r->right);
+  best=max(best,l+rt);      // diameter (edges)
+  return 1+max(l,rt);
+}`,
+"Lowest Common Ancestor":`Node* lca(Node*r,Node*p,Node*q){
+  if(!r||r==p||r==q) return r;
+  Node*l=lca(r->left,p,q),*rt=lca(r->right,p,q);
+  return (l&&rt)?r:(l?l:rt);
+}`,
+"Validate BST":`bool ok(Node*r,long long lo,long long hi){
+  if(!r) return true;
+  if(r->val<=lo||r->val>=hi) return false;
+  return ok(r->left,lo,r->val)&&ok(r->right,r->val,hi);
+}  // call: ok(root,LLONG_MIN,LLONG_MAX)`,
+"Max Path Sum":`int mx=INT_MIN;
+int gain(Node*r){
+  if(!r) return 0;
+  int l=max(0,gain(r->left)), rt=max(0,gain(r->right));
+  mx=max(mx,r->val+l+rt);
+  return r->val+max(l,rt);
+}`,
+"Invert / Symmetric / Same Tree":`Node* invert(Node*r){
+  if(!r) return nullptr;
+  Node*t=r->left; r->left=invert(r->right); r->right=invert(t); return r;
+}
+bool same(Node*a,Node*b){
+  if(!a||!b) return a==b;
+  return a->val==b->val&&same(a->left,b->left)&&same(a->right,b->right);
+}  // symmetric: mirror(a->left,a->right) with a->left↔b->right`,
+"BFS / DFS":`vector<vector<int>> adj; // adj[u] = neighbours
+void bfs(int s,int n){
+  vector<bool> vis(n,false); queue<int> q;
+  q.push(s); vis[s]=true;
+  while(!q.empty()){int u=q.front();q.pop();
+    for(int v:adj[u]) if(!vis[v]){vis[v]=true;q.push(v);}}
+}
+void dfs(int u,vector<bool>&vis){
+  vis[u]=true;
+  for(int v:adj[u]) if(!vis[v]) dfs(v,vis);
+}`,
+"Number of Islands":`void sink(vector<vector<char>>&g,int i,int j){
+  if(i<0||j<0||i>=g.size()||j>=g[0].size()||g[i][j]!='1') return;
+  g[i][j]='0'; sink(g,i+1,j);sink(g,i-1,j);sink(g,i,j+1);sink(g,i,j-1);
+}
+int islands(vector<vector<char>>&g){
+  int c=0;
+  for(int i=0;i<g.size();i++)for(int j=0;j<g[0].size();j++)
+    if(g[i][j]=='1'){c++;sink(g,i,j);}
+  return c;
+}`,
+"Topological Sort (Kahn)":`vector<int> topo(int n,vector<vector<int>>&adj){
+  vector<int> in(n,0),ord;
+  for(auto&l:adj) for(int v:l) in[v]++;
+  queue<int> q;
+  for(int i=0;i<n;i++) if(!in[i]) q.push(i);
+  while(!q.empty()){int u=q.front();q.pop();ord.push_back(u);
+    for(int v:adj[u]) if(--in[v]==0) q.push(v);}
+  return ord;
+}`,
+"Cycle Detection":`bool cyc(int u,vector<int>&st){ // 0=new,1=in stack,2=done
+  st[u]=1;
+  for(int v:adj[u]){
+    if(st[v]==1) return true;
+    if(st[v]==0&&cyc(v,st)) return true;
+  }
+  st[u]=2; return false;
+}`,
+"Dijkstra":`vector<int> dijkstra(int s,int n,vector<vector<pair<int,int>>>&adj){ // {v,w}
+  vector<int> d(n,INT_MAX); d[s]=0;
+  priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq;
+  pq.push({0,s});
+  while(!pq.empty()){
+    auto [du,u]=pq.top(); pq.pop();
+    if(du>d[u]) continue;
+    for(auto [v,w]:adj[u])
+      if(d[u]+w<d[v]){d[v]=d[u]+w;pq.push({d[v],v});}
+  }
+  return d;
+}`,
+"Union-Find (DSU)":`vector<int> p;  // init: iota(p.begin(),p.end(),0)
+int find(int x){ return p[x]==x?x:p[x]=find(p[x]); }
+bool unite(int a,int b){
+  a=find(a); b=find(b);
+  if(a==b) return false;   // already connected → cycle
+  p[a]=b; return true;
+}`,
+"Clone Graph / Bipartite / Rotten Oranges":`bool bip(int s,vector<int>&col){ // col init -1
+  queue<int> q; q.push(s); col[s]=0;
+  while(!q.empty()){int u=q.front();q.pop();
+    for(int v:adj[u]){
+      if(col[v]==-1){col[v]=1-col[u];q.push(v);}
+      else if(col[v]==col[u]) return false;}}
+  return true;
+}`,
+"Fibonacci / Climbing Stairs":`int climb(int n){
+  int a=1,b=1;
+  for(int i=2;i<=n;i++){int c=a+b;a=b;b=c;}
+  return b;
+}`,
+"House Robber":`int rob(vector<int>&a){
+  int p=0,c=0;
+  for(int x:a){int t=max(c,p+x);p=c;c=t;}
+  return c;
+}`,
+"Kadane (Max Subarray)":`int kadane(vector<int>&a){
+  int cur=a[0],best=a[0];
+  for(int i=1;i<a.size();i++){cur=max(a[i],cur+a[i]);best=max(best,cur);}
+  return best;
+}`,
+"0/1 Knapsack":`int knap(vector<int>&w,vector<int>&v,int W){
+  vector<int> dp(W+1,0);
+  for(int i=0;i<w.size();i++)
+    for(int c=W;c>=w[i];c--)
+      dp[c]=max(dp[c],v[i]+dp[c-w[i]]);
+  return dp[W];
+}  // Subset sum, partition equal subset = same pattern`,
+"Coin Change":`int coin(vector<int>&cs,int amt){
+  vector<int> dp(amt+1,amt+1); dp[0]=0;
+  for(int i=1;i<=amt;i++)
+    for(int c:cs) if(c<=i) dp[i]=min(dp[i],dp[i-c]+1);
+  return dp[amt]>amt?-1:dp[amt];
+}  // ways count: for(c) for(i) dp[i]+=dp[i-c]`,
+"Longest Increasing Subsequence":`int lis(vector<int>&a){
+  vector<int> t;
+  for(int x:a){
+    auto it=lower_bound(t.begin(),t.end(),x);
+    if(it==t.end()) t.push_back(x); else *it=x;
+  }
+  return t.size();
+}`,
+"Longest Common Subsequence":`int lcs(string&a,string&b){
+  int n=a.size(),m=b.size(); vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+  for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)
+    dp[i][j]=a[i-1]==b[j-1]?dp[i-1][j-1]+1:max(dp[i-1][j],dp[i][j-1]);
+  return dp[n][m];
+}  // LPS = lcs(s, reverse(s))`,
+"Edit Distance":`int edit(string&a,string&b){
+  int n=a.size(),m=b.size(); vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+  for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j;
+  for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)
+    dp[i][j]=a[i-1]==b[j-1]?dp[i-1][j-1]
+      :1+min({dp[i-1][j-1],dp[i-1][j],dp[i][j-1]});
+  return dp[n][m];
+}`,
+"Grid Paths / Min Path Sum":`int minPath(vector<vector<int>>&g){
+  int n=g.size(),m=g[0].size();
+  for(int i=0;i<n;i++)for(int j=0;j<m;j++){
+    if(!i&&!j) continue;
+    int up=i?g[i-1][j]:INT_MAX, left=j?g[i][j-1]:INT_MAX;
+    g[i][j]+=min(up,left);
+  }
+  return g[n-1][m-1];
+}  // unique paths: dp[i][j]=dp[i-1][j]+dp[i][j-1]`,
+"Memoization Template":`vector<int> memo(100,-1);
+int f(int n){
+  if(n<=1) return n;
+  if(memo[n]!=-1) return memo[n];
+  return memo[n]=f(n-1)+f(n-2);
+}
+// More: Word Break, Palindrome Partition, Matrix Chain, Buy/Sell Stock, Egg Drop`
+};
+const TC={"Arrays & Strings":"Capgemini-level basics. Edge cases check karo: empty, 1 element, negatives, duplicates. Strings: s[i], s.size(), substr(), reverse(), sort().",
+"Stack & Queue":"C++: stack<int> st (push/pop/top), queue<int> q (push/front/pop). Matching / next greater → stack."};
+const $=x=>document.getElementById(x);
+const L=()=>st.lang==='cpp'?'cpp':'java';
+const nav=$('nav'),m=$('m'),q=$('q'),bar=$('bar'),pt=$('pt');
+const KEY='dsa-cheat-v1';
+let st={done:{},star:{},note:{},theme:''};
+try{st=Object.assign(st,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+let cur=decodeURIComponent(location.hash.slice(1));
+if(!D[cur])cur=Object.keys(D)[0];
+let onlyStar=false,hideDone=false;
+const id=(t,a)=>t+'|'+a;
+function hl(c){
+  const e=c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return e.replace(/(\/\/.*)|("(?:[^"\\]|\\.)*")|\b(int|long|char|boolean|void|String|class|new|return|if|else|for|while|null|true|false|static|public|private|final|double|break|continue|bool|vector|unordered_map|unordered_set|map|set|auto|struct|nullptr|const|queue|stack|priority_queue|pair|string)\b|\b(\d+)\b/g,
+    (x,cm,s,k,n)=>cm?'<i class=c>'+cm+'</i>':s?'<i class=s>'+s+'</i>':k?'<i class=k>'+k+'</i>':'<i class=n>'+n+'</i>');
+}
+function stats(t){const it=D[t].items;return[it.filter(x=>st.done[id(t,x[0])]).length,it.length];}
+function updProg(){
+  let d=0,t=0;
+  Object.keys(D).forEach(k=>{const[a,b]=stats(k);d+=a;t+=b;});
+  bar.style.width=(t?d/t*100:0)+'%';pt.textContent=d+' / '+t+' solved';
+  [...nav.children].forEach(b=>{const[x,y]=stats(b.dataset.k);b.textContent=b.dataset.k+' '+x+'/'+y;b.classList.toggle('on',b.dataset.k===cur);});
+}
+function render(){
+  const f=q.value.toLowerCase();m.innerHTML='';
+  const t=document.createElement('div');t.className='tip';t.textContent=(L()==='cpp'&&TC[cur]||D[cur].tip)+(L()==='cpp'?'  [C++: #include <bits/stdc++.h> + using namespace std;]':'');m.append(t);
+  let shown=0;
+  D[cur].items.forEach(([a,b,j])=>{const miss=L()==='cpp'&&!C[a];const c=L()==='cpp'&&C[a]?C[a]:j;
+    const k=id(cur,a);
+    if(f&&!(a+b+c+(S[a]||'')).toLowerCase().includes(f))return;
+    if(onlyStar&&!st.star[k])return;
+    if(hideDone&&st.done[k])return;
+    shown++;
+    const d=document.createElement('details');if(f)d.open=true;
+    d.className=st.done[k]?'done':'';
+    d.innerHTML='<summary><input type=checkbox class=ck title="Mark solved"><span class=ti></span><small></small><button class=st title=Star>★</button></summary><p><b>Problem: </b><span class=ps></span></p><div class=cw><button class=cp>Copy</button><pre></pre></div><textarea placeholder="Your notes..."></textarea>';
+    const Q=s=>d.querySelector(s);
+    Q('.ti').textContent=a;Q('small').textContent=b+(miss?' · Java shown':'');Q('.ps').textContent=S[a]||'';
+    Q('pre').innerHTML=hl(c);
+    const ck=Q('.ck');ck.checked=!!st.done[k];
+    ck.onclick=e=>{e.stopPropagation();if(ck.checked)st.done[k]=1;else delete st.done[k];save();d.classList.toggle('done',ck.checked);updProg();};
+    const sb=Q('.st');sb.classList.toggle('on',!!st.star[k]);
+    sb.onclick=e=>{e.preventDefault();e.stopPropagation();if(st.star[k])delete st.star[k];else st.star[k]=1;save();sb.classList.toggle('on',!!st.star[k]);};
+    Q('.cp').onclick=e=>{const bt=e.target;navigator.clipboard&&navigator.clipboard.writeText(c).then(()=>{bt.textContent='Copied!';setTimeout(()=>bt.textContent='Copy',1200);});};
+    const ta=Q('textarea');ta.value=st.note[k]||'';
+    ta.oninput=()=>{if(ta.value)st.note[k]=ta.value;else delete st.note[k];save();};
+    m.append(d);
+  });
+  if(!shown){const e=document.createElement('div');e.className='tip';e.textContent='Kuch nahi mila.';m.append(e);}
+  updProg();
+}
+function setLang(){$('lg').textContent='Lang: '+(L()==='cpp'?'C++':'Java');$('lt').textContent=L()==='cpp'?'C++':'Java';}
+$('lg').onclick=()=>{st.lang=L()==='cpp'?'java':'cpp';save();setLang();render();};
+function applyTheme(){if(st.theme)document.documentElement.dataset.theme=st.theme;}
+Object.keys(D).forEach(k=>{const b=document.createElement('button');b.dataset.k=k;b.onclick=()=>{cur=k;location.hash=encodeURIComponent(k);render();};nav.append(b);});
+q.oninput=render;
+$('fs').onclick=e=>{onlyStar=!onlyStar;e.target.classList.toggle('on',onlyStar);render();};
+$('fh').onclick=e=>{hideDone=!hideDone;e.target.classList.toggle('on',hideDone);render();};
+$('th').onclick=()=>{const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;st.theme=dk?'light':'dark';applyTheme();save();};
+$('ex').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(st)],{type:'application/json'}));a.download='dsa-progress.json';a.click();};
+$('im').onchange=e=>{const r=new FileReader();r.onload=()=>{try{st=Object.assign(st,JSON.parse(r.result));save();applyTheme();render();}catch(x){alert('Invalid file');}};r.readAsText(e.target.files[0]);};
+$('rs').onclick=()=>{if(confirm('Reset all progress, stars and notes?')){st={done:{},star:{},note:{},theme:st.theme,lang:st.lang};save();render();}};
+addEventListener('keydown',e=>{const t=document.activeElement.tagName;if(e.key==='/'&&t!=='INPUT'&&t!=='TEXTAREA'){e.preventDefault();q.focus();}});
+addEventListener('hashchange',()=>{const k=decodeURIComponent(location.hash.slice(1));if(D[k]){cur=k;render();}});
+applyTheme();setLang();render();
+</script></body></html>
